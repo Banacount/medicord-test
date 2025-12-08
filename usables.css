@@ -1,0 +1,22 @@
+
+.w-100 {
+   width: 100%;
+}
+
+.fl-row {
+   display: flex;
+   flex-direction: row;
+}
+
+.fl-col {
+   display: flex;
+   flex-direction: column;
+}
+
+.mt-1 {
+   margin-top: 1rem;
+}
+
+.mt-2 {
+   margin-top: 2rem;
+}
