@@ -16,9 +16,18 @@
    flex-direction: column;
    align-items: center;
    justify-content: center;
-   background-color: #eeeeee;
+   background-color: var(--color-bg-1);
    border: 5px solid var(--color-border-btn);
    border-bottom-width: 25px;
+}
+.icon-login {
+   width: 6rem;
+   height: 6rem;
+   box-shadow: 6px 6px 5px var(--color-border-btn);
+   background-image: url("./img/icon.svg");
+   background-position: center;
+   background-size: cover;
+   background-color: var(--color-border-btn);
 }
 .input-head1 {
    width: 80%;
@@ -35,4 +44,22 @@
    border-bottom-width: 3px;
    background-color: #eeeeee;
    outline: none;
+}
+#logText {
+   width: 80%;
+   margin-top: 0.3rem;
+   text-align: right;
+   font-family: 'Montserrat';
+   font-size: 0.8rem;
+   color: red;
+}
+.login-btn {
+   width: 80%;
+   height: 2.7rem;
+   font-family: 'Montserrat';
+   font-size: 1.2rem;
+   border: 2px solid var(--color-border-btn);
+   box-shadow: 0px 7px var(--color-border-btn);
+   background-color: #dddddd;
+   margin-top: 2.5rem;
 }

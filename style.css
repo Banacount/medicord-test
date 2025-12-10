@@ -4,6 +4,7 @@
 :root {
     --color-border-btn: #b4b4b4;
     --color-bg-1: #ececec;
+    --color-bg-2: #c6eaff;
 }
 
 body {
@@ -123,4 +124,14 @@ button {
     background-image: url("./img/delete-ico.svg");
     background-position: center;
     background-size: contain;
+}
+
+.add-btn-contain {
+   width: 100%;
+   height: 100%;
+   position: fixed;
+   right: 0;
+   z-index: 1;
+   pointer-events: none;
+   background-color: transparent;
 }
