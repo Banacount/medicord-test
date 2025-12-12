@@ -70,12 +70,19 @@ const lineFr = (thickness, color, extras) => {
    textStack += thickness + spacing*2;
 };
 
+const formatDate = (date) => {
+   const year = date.getFullYear();
+   const month = (date.getMonth() + 1).toString().padStart(2, '0');
+   const day = date.getDate().toString().padStart(2, '0');
+   return `${day}/${month}/${year}`;
+}
 
 export const drawDocument = (canvas_id, data) => {
    const canv = document.getElementById(canvas_id);
    const ctx = canv.getContext("2d");
    const pageSize = { 'x': canv.width, 'y': canv.height }; 
    const pageMargWidth = pageSize.x-(pageMargin.x*2);
+   const dateNow = new Date();
    let mainFont = "'Google Sans'";
    let mainWeight = 400;
    textStack = 0;
@@ -85,10 +92,10 @@ export const drawDocument = (canvas_id, data) => {
    let hospitalName = "Hospital name.";
    let hospitalStreet = "Hostpital street address.";
    let hospitalCity = "Hostpital city."
-   let contactNumber = "09123123123123";
-   let email = "test@email.com";
-   let website = "www.example.com";
-   let createdDate = "12/11/2025";
+   let contactNumber = "Hospital contact number.";
+   let email = "hospital@email.com";
+   let website = "www.hospital.com";
+   let createdDate = formatDate(dateNow);
 
    //Patient data (test)
    let patient = {
@@ -109,6 +116,14 @@ export const drawDocument = (canvas_id, data) => {
 
    if(data != null){
       patient = data.patient;
+      //Medical infos append
+      medHistory = data.medicalInfo;
+      if(medHistory.insuranceCompany.trim() == ""){
+         medHistory.insuranceCompany = "N/A";
+         medHistory.hasInsurance = "No";
+      } else {
+         medHistory.hasInsurance = "Yes";
+      }
    }
 
    //bg

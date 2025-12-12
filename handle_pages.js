@@ -10,6 +10,20 @@ let pages = {
    "dashboard": "./view_record.html",
    "createPage": "./create_record.html"
 }
+const var_nicknames = {
+   patientName : 'Patient name',
+   patientNo : 'Patient number',
+   patientWeight : 'Patient weight',
+   patientHeight : 'Patient height',
+   birthDate : 'Birth date',
+   patientAddress : 'Patient address',
+   //Medical infos
+   medAllergy: 'Allergies',   
+   medProb: 'Medical problems',   
+   medVac: 'Vaccines',   
+   medTake: 'Regular medications',   
+   insurance: 'Medical insurance' 
+}
 
 const locatePage = async (location) =>  {
    const html = await fetch(location).then((data) => data.text());
@@ -69,8 +83,15 @@ let createRecord = () => {
       patientWeight : document.getElementById("patWeight"),
       patientHeight : document.getElementById("patHeight"),
       birthDate : document.getElementById("birthDate"),
-      patientAddress : document.getElementById("patAddr")
+      patientAddress : document.getElementById("patAddr"),
+      //Medical infos
+      medAllergy: document.getElementById("medAllergies"),   
+      medProb: document.getElementById("medProblems"),   
+      medVac: document.getElementById("medVaccines"),   
+      medTake: document.getElementById("medTaken"),   
+      insurance: document.getElementById("medInsurance") 
    }
+
    const generateBtn = document.getElementById("generateDrawing");
    const logEl = document.getElementById("inputLog");
    const infokeys1 = Object.keys(patient_info_id);
@@ -83,9 +104,9 @@ let createRecord = () => {
       generateBtn.disabled = true;
       infokeys1.map((item) => {
          console.log(`${item}: ${patient_info_id[item].value}`);
-         if(patient_info_id[item].value.trim() == ""){
+         if(patient_info_id[item].value.trim() == "" && item != "insurance"){
             blankSpot = true;
-            allblanks.push(item);
+            allblanks.push(var_nicknames[item]);
          }
       });
 
@@ -93,14 +114,22 @@ let createRecord = () => {
          logEl.innerHTML = `Blank: ${allblanks.join(', ')}`;
       } else {
          let mod_date = patient_info_id['birthDate'].value.split('-'); 
-         let final_date = `${mod_date[1]}/${mod_date[2]}/${mod_date[0]}`;
+         let final_date = `${mod_date[2]}/${mod_date[1]}/${mod_date[0]}`;
          let patient = {
             'name': patient_info_id['patientName'].value, 'number': patient_info_id['patientNo'].value, 
             'address': patient_info_id['patientAddress'].value, 
             'birth_date': final_date, 'weight': patient_info_id['patientWeight'].value, 
             'height': patient_info_id['patientHeight'].value
          }
-         drawDocument("imgDoc", { patient });
+         let medicalInfo = {
+            allergies: patient_info_id['medAllergy'].value,
+            medicalProblems: patient_info_id['medProb'].value,
+            vaccines: patient_info_id['medVac'].value,
+            medications: patient_info_id['medTake'].value,
+            insuranceCompany: patient_info_id['insurance'].value,
+         }
+         logEl.innerHTML = "";
+         drawDocument("imgDoc", { patient, medicalInfo });
       }
       generateBtn.disabled = false;
       generateBtn.innerHTML = getOldText;
