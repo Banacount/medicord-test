@@ -71,13 +71,14 @@ const lineFr = (thickness, color, extras) => {
 };
 
 
-export const drawDocument = (canvas_id) => {
+export const drawDocument = (canvas_id, data) => {
    const canv = document.getElementById(canvas_id);
    const ctx = canv.getContext("2d");
    const pageSize = { 'x': canv.width, 'y': canv.height }; 
    const pageMargWidth = pageSize.x-(pageMargin.x*2);
    let mainFont = "'Google Sans'";
    let mainWeight = 400;
+   textStack = 0;
 
    //Hospital data
    ctx.clearRect(0, 0, canv.width, canv.height);
@@ -89,11 +90,25 @@ export const drawDocument = (canvas_id) => {
    let website = "www.example.com";
    let createdDate = "12/11/2025";
 
-   //Patient data
+   //Patient data (test)
    let patient = {
       'name': "Test bottowski", 'number': "0929877155", 
-      'address': "Hell no, CDO", 
+      'address': "99999-99999 The Grandiloquent Convoluted Intersection of Hyperbolic Superlatives, Sub-Level Z-Omega, Building 777-A, Quadruple-A Wing", 
       'birth_date': "1/1/2000", 'weight': "67.67", 'height': "167"
+   }
+
+   //Medical History variables
+   let medHistory = {
+      allergies: "Peanuts, Crustacean shellfish, Soybeans, Sesame seeds, Eggs, Wheat.",
+      medicalProblems: "Mild asthma, controlled with medication Occasional migraines, triggered by stress Hypertension, managed with lifestyle changes.",
+      vaccines: "Chickenpox (Varicella), Measles (MMR), Polio (Poliomyelitis), Tetanus, Influenza (Flu), COVID-19, Human Papillomavirus (HPV)",
+      medications: "Albuterol inhaler (for asthma) – as needed Metoprolol 25mg (for blood pressure) – once daily Ibuprofen 200mg (for migraines) – as needed",
+      hasInsurance: "Yes",
+      insuranceCompany: "ACME Insurance 4208 Crestview Manor Indianapolis, Indiana(IN), 46204"
+   }
+
+   if(data != null){
+      patient = data.patient;
    }
 
    //bg
@@ -125,26 +140,27 @@ export const drawDocument = (canvas_id) => {
    makeTextAbs(sizes.t3, "black", mainFont, `Birth Date: ${patient.birth_date}`, { ctx, x: 50, y: 30 }, 500);
    makeTextAbs(sizes.t3, "black", mainFont, `Weight: ${patient.weight}`, { ctx, x: 900, y: 30 }, 500);
    makeTextAbs(sizes.t3, "black", mainFont, `Height: ${patient.height}`, { ctx, x: 900, y: 110 }, 500);
-   makeTextAbs(sizes.p, "black", mainFont, `Address: ${patient.address}`, { ctx, x: 50, y: 190 }, 500);
-   textStack += 500;
+   textStack += 200;
+   makeTextLeftWrapped(sizes.p, "black", mainFont, `Address: ${patient.address}`, { ctx, x: 50, y: 190 }, 500, pageMargWidth);
+   textStack += sizes.p+spacing;
    //text4
    makeTextLeft(sizes.t2, colors.high, mainFont, "General Medical History", { ctx }, 700);
    lineFr(10, colors.high, { pageSize, ctx });
    makeTextLeft(sizes.t3, colors.high, mainFont, "Allergies:", { ctx }, 700);
-   makeTextLeftWrapped(sizes.t3, "black", mainFont, "Peanuts, Crustacean shellfish, Soybeans, Sesame seeds, Eggs, Wheat.", { ctx }, 400, pageMargWidth);
+   makeTextLeftWrapped(sizes.t3, "black", mainFont, medHistory.allergies, { ctx }, 400, pageMargWidth);
    textStack += sizes.p+spacing;
    makeTextLeft(sizes.t3, colors.high, mainFont, "Medical Problems:", { ctx }, 700);
-   makeTextLeftWrapped(sizes.t3, "black", mainFont, "Mild asthma, controlled with medication Occasional migraines, triggered by stress Hypertension, managed with lifestyle changes.", { ctx }, 400, pageMargWidth);
+   makeTextLeftWrapped(sizes.t3, "black", mainFont, medHistory.medicalProblems, { ctx }, 400, pageMargWidth);
    textStack += sizes.p+spacing;
    makeTextLeft(sizes.t3, colors.high, mainFont, "Vaccines taken:", { ctx }, 700);
-   makeTextLeftWrapped(sizes.t3, "black", mainFont, "Chickenpox (Varicella), Measles (MMR), Polio (Poliomyelitis), Tetanus, Influenza (Flu), COVID-19, Human Papillomavirus (HPV)", { ctx }, 400, pageMargWidth);
+   makeTextLeftWrapped(sizes.t3, "black", mainFont, medHistory.vaccines, { ctx }, 400, pageMargWidth);
    textStack += sizes.p+spacing;
    makeTextLeft(sizes.t3, colors.high, mainFont, "Medications taken regularly", { ctx }, 700);
-   makeTextLeftWrapped(sizes.t3, "black", mainFont, "Albuterol inhaler (for asthma) – as needed Metoprolol 25mg (for blood pressure) – once daily Ibuprofen 200mg (for migraines) – as needed", { ctx }, 400, pageMargWidth);
+   makeTextLeftWrapped(sizes.t3, "black", mainFont, medHistory.medications, { ctx }, 400, pageMargWidth);
    textStack += sizes.p+spacing;
    makeTextLeft(sizes.t3, colors.high, mainFont,"Do you have medical insurance?", { ctx }, 700);
-   makeTextAbs(sizes.p, "black", mainFont, `Yes`, { ctx, x: 780, y: -66 }, 900);
+   makeTextAbs(sizes.p, "black", mainFont, medHistory.hasInsurance, { ctx, x: 780, y: -66 }, 900);
    textStack += sizes.p+spacing;
    makeTextLeft(sizes.t3, colors.high, mainFont, "Insurance Company: ", { ctx }, 700);
-   makeTextLeftWrapped(sizes.t3, "black", mainFont, "ACME Insurance 4208 Crestview Manor Indianapolis, Indiana(IN), 46204", { ctx }, 400, pageMargWidth);
+   makeTextLeftWrapped(sizes.t3, "black", mainFont, medHistory.insuranceCompany, { ctx }, 400, pageMargWidth);
 }

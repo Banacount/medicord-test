@@ -63,6 +63,48 @@ let dashboard = () => {
 }
 //Create record
 let createRecord = () => {
+   const patient_info_id = {
+      patientName : document.getElementById("patName"),
+      patientNo : document.getElementById("patNo"),
+      patientWeight : document.getElementById("patWeight"),
+      patientHeight : document.getElementById("patHeight"),
+      birthDate : document.getElementById("birthDate"),
+      patientAddress : document.getElementById("patAddr")
+   }
+   const generateBtn = document.getElementById("generateDrawing");
+   const logEl = document.getElementById("inputLog");
+   const infokeys1 = Object.keys(patient_info_id);
+
+   generateBtn.addEventListener('click', () => {
+      let getOldText = generateBtn.innerText;
+      let blankSpot = false; let allblanks = [];
+
+      generateBtn.innerHTML = "Loading..";
+      generateBtn.disabled = true;
+      infokeys1.map((item) => {
+         console.log(`${item}: ${patient_info_id[item].value}`);
+         if(patient_info_id[item].value.trim() == ""){
+            blankSpot = true;
+            allblanks.push(item);
+         }
+      });
+
+      if(blankSpot){
+         logEl.innerHTML = `Blank: ${allblanks.join(', ')}`;
+      } else {
+         let mod_date = patient_info_id['birthDate'].value.split('-'); 
+         let final_date = `${mod_date[1]}/${mod_date[2]}/${mod_date[0]}`;
+         let patient = {
+            'name': patient_info_id['patientName'].value, 'number': patient_info_id['patientNo'].value, 
+            'address': patient_info_id['patientAddress'].value, 
+            'birth_date': final_date, 'weight': patient_info_id['patientWeight'].value, 
+            'height': patient_info_id['patientHeight'].value
+         }
+         drawDocument("imgDoc", { patient });
+      }
+      generateBtn.disabled = false;
+      generateBtn.innerHTML = getOldText;
+   });
    drawDocument("imgDoc");
 }
 
@@ -75,10 +117,13 @@ if(localStorage.getItem(CURPAGE) === null){
    currentPage = localStorage.getItem(CURPAGE);
 }
 
-//Handle different pages
-locatePage(pages[currentPage]);
-setTimeout(() => {
+//Load page init
+const init = async () => {
+   await locatePage(pages[currentPage]); // <-- Await the content load
+
    if(currentPage === "login") loginAuth();
    else if(currentPage === "dashboard") dashboard();
    else if(currentPage === "createPage") createRecord();
-}, 650);
+}
+
+init();

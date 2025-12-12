@@ -42,7 +42,7 @@
    padding: 0.2rem;
    border: 0px solid var(--color-border-btn);
    border-bottom-width: 3px;
-   background-color: #eeeeee;
+   background-color: transparent;
    outline: none;
 }
 #logText {

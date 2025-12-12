@@ -1,4 +1,52 @@
-<h1>A constructed image:</h1>
-<div class="img-doc-contain">
+<h2 class="mt-1">Fill the patient info below</h2>
+
+<div class="fill-contain mt-1">
+<div class="basic-info">
+   <input placeholder="Patient Name" type="text" id="patName">
+   <input placeholder="Patient Contact Number" type="number" id="patNo">
+</div>
+<div class="basic-info mt-05">
+   <input placeholder="Weight (kg)" type="number" id="patWeight">
+   <input placeholder="Height (cm)" type="number" id="patHeight">
+</div>
+
+<div class="upper-text1">Birth Date</div>
+<div class="basic-info">
+<input placeholder="Birth Date" type="date" id="birthDate">
+</div>
+
+<div class="upper-text1">Address</div>
+<div class="basic-info">
+<textarea placeholder="Patient address" rows="3" id="patAddr"></textarea>
+</div>
+
+<div class="upper-text1">General Medical History</div>
+<div class="basic-info">
+<textarea placeholder="Patient Allergies" rows="2" id="medAllergies"></textarea>
+</div>
+
+<div class="basic-info">
+<textarea placeholder="Patient Medical Problems" rows="2" id="medProblems"></textarea>
+</div>
+
+<div class="basic-info">
+<textarea placeholder="Patient Vaccines" rows="2" id="medVaccines"></textarea>
+</div>
+
+<div class="basic-info">
+<textarea placeholder="Medications taken regularly" rows="2" id="medTaken"></textarea>
+</div>
+
+<div class="upper-text1">Medical Insurance</div>
+<div class="basic-info">
+<textarea placeholder="Insurance Company (Leave empty if none)" rows="1" id="medInsurance"></textarea>
+</div>
+
+<div class="gen-btn-contain">
+<button id="generateDrawing">Generate Picture Record</button>
+<p class="input-error" id="inputLog"></p>
+</div>
+
+<div class="img-doc-contain mt-2">
 <canvas width="2480" height="3508" id="imgDoc">Browser does not support canvas tag ;(</canvas>
 </div>
