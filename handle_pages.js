@@ -1,5 +1,5 @@
 import { drawDocument } from "./drawDocument.js";
-import { savePatientData, editPatientData, refreshData, getState } from "./handle_saving.js";
+import { savePatientData, editPatientData, refreshData, getState, updateState, getPatientData } from "./handle_saving.js";
 
 const CURPAGE = "curPage";
 const mainRoot = document.getElementById("mainRoot");
@@ -98,6 +98,32 @@ let createRecord = () => {
    const logEl = document.getElementById("inputLog");
    const infokeys1 = Object.keys(patient_info_id);
 
+   let drawcanv = document.getElementById("imgDoc");
+   drawcanv.style.display = "none";
+   //Check if on edit mode and append data to elements
+   /*
+   */
+   if(!getState()[1]){
+      let theData = getPatientData();
+      if(theData && theData.data_patient && theData.data_medical){
+         let patientGet = theData.data_patient;
+         let medicalGet = theData.data_medical;
+         //Append patient infos
+         patient_info_id.patientName.value = patientGet['name'];
+         patient_info_id.patientNo.value = patientGet['number'];
+         patient_info_id.patientAddress.value = patientGet['address'];
+         patient_info_id.birthDate.value = patientGet['birth_date'] || "";
+         patient_info_id.patientWeight.value = patientGet['weight'];
+         patient_info_id.patientHeight.value = patientGet['height'];
+         //Append medical infos
+         patient_info_id.medAllergy.value = medicalGet['allergies'];
+         patient_info_id.medProb.value = medicalGet['medicalProblems'];
+         patient_info_id.medVac.value = medicalGet['vaccines'];
+         patient_info_id.medTake.value = medicalGet['medications'];
+         patient_info_id.insurance.value = medicalGet['insuranceCompany'];
+      }
+   }
+
    generateBtn.addEventListener('click', () => {
       let getOldText = generateBtn.innerText;
       let blankSpot = false; let allblanks = [];
@@ -114,13 +140,12 @@ let createRecord = () => {
 
       if(blankSpot){
          logEl.innerHTML = `Blank: ${allblanks.join(', ')}`;
+         drawcanv.style.display = "none";
       } else {
-         let mod_date = patient_info_id['birthDate'].value.split('-'); 
-         let final_date = `${mod_date[2]}/${mod_date[1]}/${mod_date[0]}`;
          let patient = {
             'name': patient_info_id['patientName'].value, 'number': patient_info_id['patientNo'].value, 
             'address': patient_info_id['patientAddress'].value, 
-            'birth_date': final_date, 'weight': patient_info_id['patientWeight'].value, 
+            'birth_date': patient_info_id['birthDate'].value, 'weight': patient_info_id['patientWeight'].value, 
             'height': patient_info_id['patientHeight'].value
          }
          let medicalInfo = {
@@ -130,10 +155,14 @@ let createRecord = () => {
             medications: patient_info_id['medTake'].value,
             insuranceCompany: patient_info_id['insurance'].value,
          }
-         logEl.innerHTML = "";
          drawDocument("imgDoc", { patient, medicalInfo });
-         if(getState()[1]) savePatientData(patient, medicalInfo);
-         else editPatientData(patient, medicalInfo);
+         drawcanv.style.display = "block";
+         if(getState()[1]){
+            savePatientData(patient, medicalInfo);
+         } else {
+            editPatientData(patient, medicalInfo);
+         }
+         logEl.innerHTML = "Data saved!";
       }
       generateBtn.disabled = false;
       generateBtn.innerHTML = getOldText;

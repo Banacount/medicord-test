@@ -115,9 +115,12 @@ export const drawDocument = (canvas_id, data) => {
    }
 
    if(data != null){
-      patient = data.patient;
+      patient = structuredClone(data.patient);
+      let mod_date = patient.birth_date.split('-'); 
+      let final_date = `${mod_date[2]}/${mod_date[1]}/${mod_date[0]}`;
+      patient.birth_date = final_date;
       //Medical infos append
-      medHistory = data.medicalInfo;
+      medHistory = structuredClone(data.medicalInfo);
       if(medHistory.insuranceCompany.trim() == ""){
          medHistory.insuranceCompany = "N/A";
          medHistory.hasInsurance = "No";

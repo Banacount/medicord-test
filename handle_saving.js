@@ -13,7 +13,7 @@ if(localStorage.getItem(MODIFYSTATE) == null) localStorage.setItem(MODIFYSTATE, 
 
 export const refreshData = () => {
    allData = JSON.parse(localStorage.getItem(STORAGE_NAME));
-   dataModifyState = JSON.parse(localStorage.getItem(dataModifyState));
+   dataModifyState = JSON.parse(localStorage.getItem(MODIFYSTATE));
 };
 
 export const updateState = (id_edit, isCreate) => {
@@ -28,8 +28,11 @@ export const getState = () => {
 }
 
 export const savePatientData = (patient, medical) => {
-   allData.push({ data_id: allData.length, data_patient: patient, data_medical: medical });
+   let id_d = allData.length;
+   allData.push({ data_id: id_d, data_patient: patient, data_medical: medical });
+   updateState(id_d, false);
    localStorage.setItem(STORAGE_NAME, JSON.stringify(allData));
+   refreshData();
 };
 
 export const editPatientData = (data_patient, data_medical) => {
@@ -37,9 +40,18 @@ export const editPatientData = (data_patient, data_medical) => {
    for(let i = 0; i < allData.length; i++){
       if(dataModifyState[0] == allData[i].data_id){
          allData[i].data_patient = data_patient;
-         allData[i].data_medical = data_medical
+         allData[i].data_medical = data_medical;
          localStorage.setItem(STORAGE_NAME, JSON.stringify(allData));
          break;
       }
    }
 };
+
+export const getPatientData = () => {
+   refreshData();
+   return allData[dataModifyState[0]];
+};
+
+if(localStorage.getItem(STORAGE_NAME) != null && localStorage.getItem(MODIFYSTATE) != null){
+   refreshData();
+}
