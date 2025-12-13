@@ -1,4 +1,5 @@
 import { drawDocument } from "./drawDocument.js";
+import { savePatientData, editPatientData, refreshData, getState } from "./handle_saving.js";
 
 const CURPAGE = "curPage";
 const mainRoot = document.getElementById("mainRoot");
@@ -69,6 +70,7 @@ let loginAuth = () => {
 }
 //Dashboard
 let dashboard = () => {
+   //Handle logout
    let logoutBtn = document.getElementById("logoutBtn");
    logoutBtn.addEventListener('click', () => {
       localStorage.setItem(CURPAGE, "login");
@@ -130,6 +132,8 @@ let createRecord = () => {
          }
          logEl.innerHTML = "";
          drawDocument("imgDoc", { patient, medicalInfo });
+         if(getState()[1]) savePatientData(patient, medicalInfo);
+         else editPatientData(patient, medicalInfo);
       }
       generateBtn.disabled = false;
       generateBtn.innerHTML = getOldText;
