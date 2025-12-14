@@ -70,12 +70,26 @@ const lineFr = (thickness, color, extras) => {
    textStack += thickness + spacing*2;
 };
 
-const formatDate = (date) => {
+export const formatDate = (date) => {
    const year = date.getFullYear();
    const month = (date.getMonth() + 1).toString().padStart(2, '0');
    const day = date.getDate().toString().padStart(2, '0');
    return `${day}/${month}/${year}`;
 }
+
+export const downloadCanvas = (canvas_id, filename = "patient_record.png") => {
+   const canvas = document.getElementById(canvas_id);
+    
+   const imageURL = canvas.toDataURL("image/png");
+
+   const downloadLink = document.createElement("a");
+   downloadLink.href = imageURL;
+   downloadLink.download = filename; 
+
+   document.body.appendChild(downloadLink);
+   downloadLink.click();
+   document.body.removeChild(downloadLink);
+};
 
 export const drawDocument = (canvas_id, data) => {
    const canv = document.getElementById(canvas_id);

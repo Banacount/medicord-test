@@ -1,5 +1,5 @@
-import { drawDocument } from "./drawDocument.js";
-import { savePatientData, editPatientData, refreshData, getState, updateState, getPatientData } from "./handle_saving.js";
+import { drawDocument, formatDate, downloadCanvas } from "./drawDocument.js";
+import { savePatientData, editPatientData, refreshData, getState, updateState, getPatientData, deleteDataById } from "./handle_saving.js";
 
 const CURPAGE = "curPage";
 const mainRoot = document.getElementById("mainRoot");
@@ -70,12 +70,76 @@ let loginAuth = () => {
 }
 //Dashboard
 let dashboard = () => {
+   updateState(0, true);
    //Handle logout
    let logoutBtn = document.getElementById("logoutBtn");
+   let addBtn = document.getElementById("addRecordBtn");
+   const emptyLog = document.getElementById("emptyLogView");
    logoutBtn.addEventListener('click', () => {
       localStorage.setItem(CURPAGE, "login");
       location.reload(true);
    });
+   let dataIndex = JSON.parse(localStorage.getItem('all_data_indexed'));
+   let manyCreated = 0;
+
+   //Add button hehe
+   addBtn.addEventListener('click', () => {
+      localStorage.setItem(CURPAGE, 'createPage');
+      location.reload(true);
+   });
+
+   //loop and through the patient data
+   dataIndex.map((item) => {
+      let recContainer = document.getElementById('recordContainer'); 
+      let medRecItem = document.createElement('div');
+
+      let recProf = document.createElement('div');
+
+      let infoRec = document.createElement('div');
+      let recName = document.createElement('div');
+      let recProp = document.createElement('div');
+
+      let recBtnCon = document.createElement('div');
+      let editBtn = document.createElement('button');
+      let deleteBtn = document.createElement('button');
+      //Setting all the properties
+      medRecItem.className = 'medical-record-item';
+      recProf.className = 'record-profile';
+      recProf.innerHTML = '<img src="./img/blank_profile.webp">';
+      infoRec.className = 'info-in-record';
+      recName.className = 'record-name';
+      recProp.className = 'record-properties';
+      recBtnCon.className = 'rec-btn-container';
+      editBtn.className = 'edit-btn';
+      deleteBtn.className = 'delete-btn';
+      //Variable values
+      recName.innerHTML = item.data_patient.name;
+      let dateMod = new Date(item.dataModified);
+      recProp.innerHTML = `Data was last updated in ${formatDate(dateMod)}.`;
+      editBtn.addEventListener('click', () => {
+         updateState(item.data_id, false);
+         localStorage.setItem(CURPAGE, 'createPage');
+         location.reload(true);
+      });
+      deleteBtn.addEventListener('click', () => {
+         deleteDataById(item.data_id);
+         location.reload(true);
+      });
+      //Appending yeeey
+      medRecItem.appendChild(recProf);
+      infoRec.appendChild(recName); infoRec.appendChild(recProp);
+      medRecItem.appendChild(infoRec);
+      recBtnCon.appendChild(editBtn); recBtnCon.appendChild(deleteBtn);
+      medRecItem.appendChild(recBtnCon);
+      recContainer.appendChild(medRecItem);
+      manyCreated++;
+   });
+   if(manyCreated <= 0){
+      console.log("Data Empty!");
+      emptyLog.style.display = 'block';
+   } else {
+      emptyLog.style.display = 'none';
+   }
 }
 //Create record
 let createRecord = () => {
@@ -94,12 +158,15 @@ let createRecord = () => {
       insurance: document.getElementById("medInsurance") 
    }
 
+   const homeBtn = document.getElementById("goBackBtn");
    const generateBtn = document.getElementById("generateDrawing");
+   const downloadBtn = document.getElementById("downloadDrawing")
    const logEl = document.getElementById("inputLog");
    const infokeys1 = Object.keys(patient_info_id);
 
    let drawcanv = document.getElementById("imgDoc");
    drawcanv.style.display = "none";
+   downloadBtn.style.display = "none";
    //Check if on edit mode and append data to elements
    /*
    */
@@ -156,6 +223,7 @@ let createRecord = () => {
             insuranceCompany: patient_info_id['insurance'].value,
          }
          drawDocument("imgDoc", { patient, medicalInfo });
+         downloadBtn.style.display = 'block';
          drawcanv.style.display = "block";
          if(getState()[1]){
             savePatientData(patient, medicalInfo);
@@ -167,7 +235,15 @@ let createRecord = () => {
       generateBtn.disabled = false;
       generateBtn.innerHTML = getOldText;
    });
-   drawDocument("imgDoc");
+   //Home frfr
+   homeBtn.addEventListener('click', () => {
+      localStorage.setItem(CURPAGE, 'dashboard');
+      location.reload(true);
+   });
+   //Download button
+   downloadBtn.addEventListener('click', () => {
+      downloadCanvas("imgDoc", "medical_record.png");
+   });
 }
 
 //Check if curPage variable exists in localStorage

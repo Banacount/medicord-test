@@ -11,6 +11,7 @@
    flex-direction: row;
    justify-content: center;
    display: block;
+   border: 3px solid var(--color-border-btn);
 }
 
 .basic-info {

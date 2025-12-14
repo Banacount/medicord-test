@@ -114,6 +114,7 @@ button {
     border: 0;
     background-image: url("./img/edit-ico.svg");
     background-position: center;
+    background-repeat: no-repeat;
     background-size: contain;
 }
 .delete-btn {
@@ -123,6 +124,7 @@ button {
     margin-right: 1rem;
     background-image: url("./img/delete-ico.svg");
     background-position: center;
+    background-repeat: no-repeat;
     background-size: contain;
 }
 
@@ -133,7 +135,6 @@ button {
    display: flex;
    flex-direction: column-reverse;
    right: 0;
-   left: 90%;
    bottom: 5%;
    z-index: 1;
    pointer-events: none;
@@ -145,7 +146,45 @@ button {
     font-family: Montserrat;
     font-size: 3rem;
     text-align: center;
+    margin-left: 87%;
     border: 3px solid var(--color-border-btn);
     border-bottom-width: 10px;
+    pointer-events: all;
     color: var(--color-border-btn);
+}
+#goBackBtn {
+    width: 100%;
+    height: 3rem;
+    font-size: 1.2rem;
+    border: 3px solid var(--color-border-btn);
+    background-image: url('./img/home.svg');
+    background-position: center;
+    background-size: 2rem;
+    background-repeat: no-repeat;
+    padding: 0.1rem;
+    margin-top: 1rem;
+    color: black;
+}
+
+#emptyLogView {
+    position: absolute;
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: #00000046;
+    margin-top: 10rem;
+    place-self: center;
+    display: none;
+}
+
+.main-footer {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    right: 0;
+    font-size: 1rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    text-align: center;
+    background-color: white;
 }
