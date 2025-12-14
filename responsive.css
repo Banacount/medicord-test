@@ -39,6 +39,10 @@
       height: 2rem;
       border: 2px solid var(--color-border-btn);
    }
+   
+   #emptyLogView {
+      font-size: 1rem;
+   }
 
    /*Login style*/
    .login-box {
@@ -78,6 +82,10 @@
    .record-properties {
       font-size: 0.7rem;
       margin-left: 0.7rem;
+   }
+
+   #emptyLogView {
+      font-size: 0.9rem;
    }
 
    /* createPage style */
